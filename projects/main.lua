@@ -1,4 +1,15 @@
 leveldata = {}
+local function createPlayer( x, y, width, height, rotation )
+    --  Player is a black square.
+    local p = display.newRect( x, y, width, height )
+    p:setFillColor( 255, 0, 0 )
+    p.rotation = rotation
+
+    return p
+end
+local background = display.newRect( 0, 0, 480, 320 )  
+background:setFillColor( 255, 255, 255 )  
+
 playerposition = {0,0}
 local collideable = display.newGroup()
 local noncollideable = display.newGroup()
@@ -37,3 +48,25 @@ end
     
 end
 
+local player = createPlayer( 0, 0 , 40, 40, 0 )
+local function onTouch( event )
+    if "began" == event.phase then
+        player.isFocus = true
+
+        player.x0 = event.x - player.x
+        player.y0 = event.y - player.y
+    elseif player.isFocus then
+        if "moved" == event.phase then
+            player.x = event.x - player.x0
+            player.y = event.y - player.y0
+        elseif "ended" == phase or "cancelled" == phase then
+            player.isFocus = false
+        end
+    end
+
+    -- Return true if the touch event has been handled.
+    return true
+end
+
+-- Only the background receives touches. 
+Runtime:addEventListener( "touch", onTouch)

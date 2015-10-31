@@ -13,15 +13,15 @@ background:setFillColor( 255, 255, 255 )
 playerposition = {0,0}
 local collideable = display.newGroup()
 local noncollideable = display.newGroup()
-for i = 0, 10 do
+for i = 0, 20 do
     leveldata[i] = {}
 
-    for j = 0, 10 do
-        if i == math.random(10) then
+    for j = 0, 25 do
+        if i == math.random(20) then
 
-        leveldata[i][j] = 0 
+        leveldata[i][j] = 0
         else 
-        leveldata[i][j] = 1-- Fill the values here
+        leveldata[i][j] = 1 -- Fill the values here
         
       
         
@@ -29,9 +29,9 @@ for i = 0, 10 do
 end
 end
 
-for i=0,10 do
+for i = 0, 20 do
 
-   for j=0,10 do
+   for j = 0, 25 do
      local rect = display.newRect(i*40, j*40, 40, 40)
   if leveldata[i][j] == 0 then
     

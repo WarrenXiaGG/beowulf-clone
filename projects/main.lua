@@ -17,11 +17,12 @@ for i = 0, 10 do
     leveldata[i] = {}
 
     for j = 0, 10 do
-        if i == 2 then
+        if i == math.random(10) then
 
         leveldata[i][j] = 0 
         else 
         leveldata[i][j] = 1-- Fill the values here
+        
       
         
     end

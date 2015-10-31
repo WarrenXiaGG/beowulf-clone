@@ -1,4 +1,11 @@
 leveldata = {}
+local DC_width = display.contentWidth;
+local DC_height = display.contentHeight;
+local require = require
+
+local perspective = require("perspective")
+local camera = perspective.createView()
+
 local function createPlayer( x, y, width, height, rotation )
     --  Player is a black square.
     local p = display.newRect( x, y, width, height )
@@ -13,15 +20,15 @@ background:setFillColor( 255, 255, 255 )
 playerposition = {0,0}
 local collideable = display.newGroup()
 local noncollideable = display.newGroup()
-for i = 0, 10 do
+for i = 0, 20 do
     leveldata[i] = {}
 
-    for j = 0, 10 do
-        if i == math.random(10) then
+    for j = 0, 25 do
+        if i == math.random(20) then
 
-        leveldata[i][j] = 0 
+        leveldata[i][j] = 0
         else 
-        leveldata[i][j] = 1-- Fill the values here
+        leveldata[i][j] = 1 -- Fill the values here
         
       
         
@@ -29,9 +36,9 @@ for i = 0, 10 do
 end
 end
 
-for i=0,10 do
+for i = 0, 20 do
 
-   for j=0,10 do
+   for j = 0, 25 do
      local rect = display.newRect(i*40, j*40, 40, 40)
   if leveldata[i][j] == 0 then
     
@@ -44,12 +51,14 @@ for i=0,10 do
 
     noncollideable:insert( rect )
 end
+camera:add(rect, 1)
    
 end
     
 end
 
 local player = createPlayer( 0, 0 , 40, 40, 0 )
+camera:add(player, 2)
 local function onTouch( event )
     if "began" == event.phase then
         player.isFocus = true
@@ -68,6 +77,7 @@ local function onTouch( event )
     -- Return true if the touch event has been handled.
     return true
 end
-
+camera:setFocus(player) -- Set the focus to the player
+camera:track() 
 -- Only the background receives touches. 
 Runtime:addEventListener( "touch", onTouch)

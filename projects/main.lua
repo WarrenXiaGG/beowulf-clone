@@ -1,37 +1,39 @@
--- Variable for top alignment axis
-local topAlignAxis = 200
+leveldata = {}
+playerposition = {0,0}
+local collideable = display.newGroup()
+local noncollideable = display.newGroup()
+for i = 0, 10 do
+    leveldata[i] = {}
 
--- Create first multi-line text object
-local options1 = 
-{
-    text = "The quick brown fox jumped over the lazy dog.",
-    x = 90,
-    width = 120,     --required for multi-line and alignment
-    font = native.systemFont,
-    fontSize = 18
-}
-local myText1 = display.newText( options1 )
-myText1:setFillColor( 1, 0, 0 )
+    for j = 0, 10 do
+        if i == 2 then
 
--- Set anchor Y on object to 0 (top)
-myText1.anchorY = 0
--- Align object to top alignment axis
-myText1.y = topAlignAxis
+        leveldata[i][j] = 0 
+        else 
+        leveldata[i][j] = 1-- Fill the values here
+      
+        
+    end
+end
+end
 
+for i=0,10 do
 
--- Create second multi-line text object
-local options2 = 
-{
-    text = "The quick brown fox jumped over the lazy dog, then jumped back again.",
-    x = 230,
-    width = 120,     --required for multi-line and alignment
-    font = native.systemFont,
-    fontSize = 18
-}
-local myText2 = display.newText( options2 )
-myText2:setFillColor( 0.6, 0.4, 0.8 )
+   for j=0,10 do
+     local rect = display.newRect(i*40, j*40, 40, 40)
+  if leveldata[i][j] == 0 then
+    
+    rect:setFillColor( 0.5 )
 
--- Set anchor Y on object to 0 (top)
-myText2.anchorY = 0
--- Align object to top alignment axis
-myText2.y = topAlignAxis
+    collideable:insert( rect )
+    else 
+    
+    rect:setFillColor( 3.6 )
+
+    noncollideable:insert( rect )
+end
+   
+end
+    
+end
+

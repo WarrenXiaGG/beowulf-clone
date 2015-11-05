@@ -9,7 +9,8 @@ physics.setGravity( 0, 0 )
 local showGameElements = true
 local perspective = require("perspective")
 local camera = perspective.createView()
-local motionx = 0 -- Variable used to move character along x axis
+local motionx = 0 
+local motiony = 0 -- Variable used to move character along x axis
 local speed = 10 -- Set Walking Speed
 local prevx
 local prevy
@@ -22,7 +23,7 @@ local function createPlayer( x, y, width, height, rotation )
     local p = display.newRect( x, y, width, height )
     p:setFillColor( 255, 0, 0 )
     p.rotation = rotation
-    
+
 physics.addBody ( p, "dynamic", playerBodyElement)
 
     return p
@@ -52,17 +53,20 @@ for i = 0, 20 do
 
    for j = 0, 25 do
     
-     local rect = display.newRect(i*40, j*40, 40, 40)
+     
+     local rect
      
   if leveldata[i][j] == 0 then
-    
+     rect = display.newRect(i*64, j*64, 64, 64)
     rect:setFillColor( 0.5 )
  collideable:insert( rect )
  
  physics.addBody (rect, "static" )
     else 
+    rect = display.newImage ("images/floor.bmp")
+    rect.x = i*64
+    rect.y = j*64
     
-    rect:setFillColor( 3.6 )
 
     noncollideable:insert( rect )
 end
@@ -72,12 +76,13 @@ end
     
 end
 
-local player = createPlayer( 0, 0 , 40, 40, 0 )
+local player = createPlayer( 0, 0 , 64, 64, 0 )
 
 
  local function stop (event)
     if event.phase =="ended" then
         motionx = 0
+        motiony = 0
     end     
 end
 Runtime:addEventListener("touch", stop )
@@ -85,6 +90,7 @@ Runtime:addEventListener("touch", stop )
 local function movePlayer (event)
     prevx = player.x
     player.x = player.x + motionx   
+    player.y = player.y + motiony
 end
 Runtime:addEventListener("enterFrame", movePlayer)
 
@@ -100,18 +106,40 @@ local rightArrow = display.newImage ("images/btn_arrow.png")
     rightArrow.x = 180 
     rightArrow.y = 282
     rightArrow.isVisible = showGameElements
+local upArrow = display.newImage ("images/btn_arrow.png")
+    upArrow.x = 125 
+    upArrow.y = 240
+    upArrow.rotation = 270
+    upArrow.isVisible = showGameElements
 
+-- RIGHT DPAD
+local downArrow = display.newImage ("images/btn_arrow.png")
+    downArrow.x = 122 
+    downArrow.y = 322
+    downArrow.rotation = 90
+    downArrow.isVisible = showGameElements
 function leftArrow:touch()
     motionx = -speed
 end
 leftArrow:addEventListener("touch",leftArrow)
 
 -- When right arrow is touched, move character right
+function upArrow:touch()
+    motiony = -speed
+end
+upArrow:addEventListener("touch",upArrow)
+function downArrow:touch()
+    motiony = speed
+end
+downArrow:addEventListener("touch",downArrow)
+
+-- When right arrow is touched, move character right
 function rightArrow:touch()
     motionx = speed
 end
 rightArrow:addEventListener("touch",rightArrow)
-
+player.isFixedRotation = true
+    player.angularVelocity = 0
 -- Make character jump
 
 camera:add(player, 1)
